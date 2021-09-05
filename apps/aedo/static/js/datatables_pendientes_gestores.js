@@ -60,9 +60,9 @@
                     $(td).attr( "title", "Estado" );
                 }
             },
-            {
-                "data": null,
-                "defaultContent": '<button type="button" class="btn-edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</button>'
+            {"data": "action",render: function(data, type) {                     
+                    return data;
+                }
             }
         ]
     });

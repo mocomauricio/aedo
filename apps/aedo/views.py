@@ -14,7 +14,7 @@ class CityViewSet(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
 
 
-class DeliveryViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin, UpdateModelMixin):
+class DeliveryViewSet(ModelViewSet):
     queryset = Delivery.objects.all()
     serializer_class = DeliverySerializer
     permission_classes = [IsOwnerOrReadOnly]

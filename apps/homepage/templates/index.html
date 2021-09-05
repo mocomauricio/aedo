@@ -4,6 +4,8 @@
 
 {% block extrahead %}
   <link rel="stylesheet" href="{% static '/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+
+
 {% endblock %}
 
 
@@ -91,15 +93,74 @@
 {% endblock %}
 
 {% block extrafooter %}
+  <script type="text/javascript">
+      function update_delivery(id, state, received){
+        console.log(`id=${id} state=${state} received=${received}`);
+        $("#current_received_id").val(received);
+        $("#delivery_id").val(id);
+        $("#state").val(state);
+        $("#received").val(0)
+        $("#comment").val("")
+        $('#EditDelivery').modal('show')
+      }
+
+
+  </script>
+
 <script src="{% static '/plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 
 <script src="{% static '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
   {% if request.user|has_group:"Gestores" %} 
   <script src="{% static '/js/datatables_pendientes_gestores.js' %}"></script>
+
+  <script type="text/javascript">
+      $("#editDeliveryForm").submit(function(event) {
+        event.preventDefault();
+        const $csrf_token = $('[name="csrfmiddlewaretoken"]').val();
+        let delivery_id = $("#delivery_id").val();
+
+        var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+        });
+
+        $.ajax({
+            url: `/api/deliveries/${delivery_id}/`,
+            method:'PATCH',
+            headers:{
+                "X-CSRFToken": $csrf_token
+            },
+            data: {
+              'received': parseInt($("#received").val()) + parseInt($("#current_received_id").val()),
+              'state':    parseInt($("#state").val()),
+              'comment':  $("#comment").val()
+            }
+        })
+        .done(function(response){
+          Toast.fire({
+            icon: 'success',
+            title: 'La entrega fue actualizada'
+          })
+          $('#EditDelivery').modal('hide');
+          table.ajax.reload();
+        })
+        .fail(function(xhr, status, error) {
+          console.log(error);
+          Toast.fire({
+            icon: 'error',
+            title: 'Error: revise los campos introducidos'
+          })
+        });
+      });
+  </script>
+
   {% endif%}
 
   {% if request.user|has_group:"Clientes" %} 
   <script src="{% static '/js/datatables_pendientes_clientes.js' %}"></script>
+
   {% endif%}  
 {% endblock %}
