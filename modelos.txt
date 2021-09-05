@@ -1,0 +1,63 @@
+Empresa
+	id
+	nombre
+	documento (RUC/CI)
+	telefono
+	celular
+	Direccion
+	...
+
+UsuarioEmpresa
+	id
+	usuario (FK Usuario)
+	empresa (FK Empresa)
+
+Usuario
+	id
+	foto
+	nombres
+	apellidos
+	email
+	password	
+
+Ciudad
+	nombre
+	costo_servicio
+	comision_gestor
+	comision_aedo
+
+
+Entrega
+	id
+	
+	#### Estos campos completa el administrador
+	empresa (FK Empresa)
+	gestor (FK Usuario con rol gestor)
+	ciudad (FK Ciudad)
+	direccion_origen
+	direccion_destino
+	
+	fecha_hora_retiro
+	fecha_hora_entrega
+	
+	costo_servicio   #  Estos campos se rellenan
+	comision_gestor  #  al seleccionar la ciudad
+	comision_aedo    #  pero son editables
+	
+	comision_empresa
+	
+	monto_cobrar     #  Este campo se rellena con costo_servicio + comision_empresa
+	
+	rendido (bool)
+
+	#### Estos campos edita el Usuario con rol Gestor (Tambien puede completar el administrador)
+	estado (pendiente, en camino, entregado) 
+	monto_cobrado
+	monto_pendiente #este campo se completa solo
+	observaciones
+
+	
+	
+	
+
+

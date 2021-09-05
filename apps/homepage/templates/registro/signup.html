@@ -1,0 +1,42 @@
+{% extends "registro/core.html" %}
+
+
+{% block content %}
+<div class="register-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="#" class="h1"><b>AEDO Entregas</b></a>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">Registre una nueva cuenta</p>
+
+      <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+          <div class="input-group mb-3">
+            {{ field }}
+            {% if field.help_text %}
+              <small style="display: none">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}   
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+      <a href="{% url 'login' %}" class="text-center">Ya tengo una cuenta, volver al login</a>
+
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+{% endblock %}

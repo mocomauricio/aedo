@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_templatetags %}
+
+{% block extrahead %}
+  <link rel="stylesheet" href="{% static '/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+{% endblock %}
+
+
+
+{% block content_header %}
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+{% endblock %}
+
+
+{% block content %}
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-hourglass-half"></i>
+                  Pendientes
+                </h3>
+              </div>
+              <div class="card-body">
+
+
+                {% if request.user|has_group:"Clientes" %} 
+                    <table id="datatables" class="jtabla table table-striped" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Retirar</th>
+                          <th>Entregar</th>
+                          <th>Importe</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                {% endif %}
+
+                {% if request.user|has_group:"Gestores" %} 
+                    <table id="datatables" class="jtabla table table-striped" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Retirar</th>
+                          <th>Entregar</th>
+                          <th>Comisión</th>
+                          <th>Cobrar</th>
+                          <th>Estado</th>
+                          <th>Acciones<th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                {% endif %}
+
+              </div>
+            </div>
+
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+{% endblock %}
+
+{% block extrafooter %}
+<script src="{% static '/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script src="{% static '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+  {% if request.user|has_group:"Gestores" %} 
+  <script src="{% static '/js/datatables_pendientes_gestores.js' %}"></script>
+  {% endif%}
+
+  {% if request.user|has_group:"Clientes" %} 
+  <script src="{% static '/js/datatables_pendientes_clientes.js' %}"></script>
+  {% endif%}  
+{% endblock %}
