@@ -40,6 +40,18 @@
                     $(td).attr( "title", "ID" );
                 }
             },
+            {"data": "package", createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr( "title", "Paquete" );
+                }
+            },
+            {"data": "employee", createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr( "title", "Gestor" );
+                }
+            },
+            {"data": "destination_address", createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr( "title", "Destino" );
+                }
+            },
             {"data": "reception_date", createdCell: function (td, cellData, rowData, row, col) {
                     $(td).attr( "title", "Retirar" );
                 }

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load custom_templatetags %}
 
 
 {% block content_header %}
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Precios</h1>
+            <h1>Precios</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -22,25 +22,80 @@
 {% block content %}
       <div class="container-fluid">
         <div class="row">
+          {% if services %}
           <div class="col-12">
-            <!-- Calendar -->
             <div class="card">
-              <div class="card-header border-0">
+              <div class="card-header">
                 <h3 class="card-title">
-                  <i class="far fa-money-bill-alt"></i>
-                  Precios
+                  <i class="fas fa-heart"></i>
+                  Nuestros servicios
                 </h3>
               </div>
-
-
-              <div class="card-body pt-0">
-
-                <img class="img-fluid" src="{% static '/images/precios.jpg' %}">
+              <div class="card-body">
+                {% for service in services %}
+                <p>{{ service }}</p>
+                {% endfor %}
               </div>
-
             </div>
-
           </div>
+          {% endif%}
+
+          {% if cities %}
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-money-bill-alt"></i>
+                  Lista de precios
+                </h3>
+              </div>
+              <div class="card-body">
+                {% if request.user|has_group:"Clientes" %} 
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>CIUDAD</th>
+                      <th>PRECIO</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for city in cities %}
+                    <tr>
+                      <td>{{ city.name }}</td>
+                      <td>Gs {{ city.service_amount }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% endif %}
+
+                {% if request.user|has_group:"Gestores" %} 
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>CIUDAD</th>
+                      <th>PRECIO</th>
+                      <th>COMISION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for city in cities %}
+                    <tr>
+                      <td>{{ city.name }}</td>
+                      <td>Gs {{ city.service_amount }}</td>
+                      <td>Gs {{ city.employee_amount }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+
         </div>
       </div>
 

@@ -133,8 +133,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Modelo de Usuario personalizado
 AUTH_USER_MODEL = 'accounts.User'
 
-PWA_APP_NAME = 'PoliTareas'
-PWA_APP_DESCRIPTION = "Sistema de Gestion de Tareas"
+PWA_APP_NAME = 'AEDO ENTREGAS'
+PWA_APP_DESCRIPTION = "Sistema de Gestion de Entregas"
 PWA_APP_THEME_COLOR = '#0A0302'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'

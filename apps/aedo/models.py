@@ -86,16 +86,20 @@ DELIVERY_STATUS = [
     (0, 'PENDIENTE'),
     (1, 'RETIRADO'),
     (2, 'EN CAMINO'),
-    (3, 'ENTREGADO')
+    (3, 'ENTREGADO'),
+    [4, 'CANCELADO']
+]
+
+FINANCIAL_STATE = [
+	(0, 'PENDIENTE DE COBRO'),
+	(1, 'PENDIENTE DE PAGO'),
+	(2, 'RENDIDO')
 ]
 
 class Delivery(models.Model):
 	class Meta:
 		verbose_name = "Entrega"
 		verbose_name_plural = "Entregas"
-		#permissions = (
-        #    ("read", "Puede ver la lista"),
-        #)
 
 	package = models.TextField(
 		verbose_name="paquete",
@@ -114,7 +118,9 @@ class Delivery(models.Model):
 		User,
 		verbose_name='gestor', 
 		on_delete=models.CASCADE, 
-		related_name='+'
+		related_name='+',
+		null=True,
+		blank=True
 	)
 
 	city = models.ForeignKey(
@@ -165,14 +171,15 @@ class Delivery(models.Model):
 	aedo_amount = models.IntegerField(verbose_name='comisión AEDO')
 	company_amount = models.IntegerField(verbose_name='comisión de la empresa')
 
-	completed = models.BooleanField(
-		verbose_name='rendido',
-		default=False
+	state = models.PositiveSmallIntegerField(
+		verbose_name='estado de la encomienda',
+		choices=DELIVERY_STATUS, 
+		default=0
 	)
 
-	state = models.PositiveSmallIntegerField(
-		verbose_name='estado',
-		choices=DELIVERY_STATUS, 
+	state2 = models.PositiveSmallIntegerField(
+		verbose_name='estado de la operación',
+		choices=FINANCIAL_STATE, 
 		default=0
 	)
 
@@ -182,7 +189,7 @@ class Delivery(models.Model):
 		blank=True
 	)
 
-	received = models.IntegerField(verbose_name='cobrado')
+	received = models.IntegerField(verbose_name='cobrado', default=0)
 
 	def get_total(self):
 		return self.service_amount + self.company_amount
@@ -192,3 +199,14 @@ class Delivery(models.Model):
 
 	def __str__(self):
 		return "Entrega ID: " + str(self.id)
+
+
+class Service(models.Model):
+	class Meta:
+		verbose_name = "Servicio"
+		verbose_name_plural = "Servicios"
+
+	description = models.TextField()
+
+	def __str__(self):
+		return self.description

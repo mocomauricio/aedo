@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 
 from django.utils import timezone
 
-from apps.aedo.models import Delivery, UserCompany
+from apps.aedo.models import Delivery, UserCompany, City, Service
 
 User = get_user_model()
 
@@ -46,6 +46,13 @@ class CalendarView(TemplateView):
 @method_decorator(login_required, name='dispatch')
 class PriceView(TemplateView):
     template_name = "price.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['services'] = Service.objects.all()
+        context['cities'] =  City.objects.all()
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class DeliveryView(TemplateView):

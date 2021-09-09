@@ -1,7 +1,5 @@
 
-
-@media screen and (max-width: 600px) {
-    .jtabla {
+   .jtabla {
         border: 0px;
     }
     .jtabla caption {
@@ -16,7 +14,7 @@
         display: block;
     }
     .jtabla th, .jtabla td {
-        font-size: 12px;
+
         border: none;
     }
     .jtabla td {
@@ -33,4 +31,3 @@
         text-transform: uppercase;
         float: left;
     }
-}

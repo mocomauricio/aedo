@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.decorators import register
-from .models import Company, UserCompany, City, Delivery
+from .models import Company, UserCompany, City, Delivery, Service
 
 # Register your models here.
 @register(Company)
@@ -24,6 +24,14 @@ class CityAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_per_page = 50
 
+@register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ['description']
+    ordering = ['id']
+    search_fields = ['description']
+    list_per_page = 50
+
+
 @register(Delivery)
 class DeliveryAdmin(admin.ModelAdmin):
     class Media:
@@ -31,9 +39,17 @@ class DeliveryAdmin(admin.ModelAdmin):
             'js/admin_delivery.js',      
         )
 
-    list_display = ['id', 'company', 'employee', 'city', 'package', 'state', 'completed']
-    list_filter = ['state', 'completed']
+    list_display = ['id', 'company', 'employee', 'city', 'package', 'state', 'state2', 'total', 'pendiente']
+    list_filter = ['state', 'state2']
     ordering = ['-id']
     search_fields = ['package', 'comment']
     list_per_page = 50
     autocomplete_fields = ['company', 'employee']
+
+    @admin.display(empty_value='???')
+    def total(self, obj):
+        return obj.get_total()
+
+    @admin.display(empty_value='???')
+    def pendiente(self, obj):
+        return obj.get_pending()
