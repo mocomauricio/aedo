@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -81,13 +82,22 @@ class City(models.Model):
 	def __str__(self):
 		return self.name
 
+SCORE = [
+	(0, '----'),
+	(1, 'MALO'),
+	(2, 'REGULAR'),
+	(3, 'BUENO'),
+	(4, 'MUY BUENO'),
+	(5, 'EXCELENTE')
+
+]
 
 DELIVERY_STATUS = [
     (0, 'PENDIENTE'),
     (1, 'RETIRADO'),
     (2, 'EN CAMINO'),
     (3, 'ENTREGADO'),
-    [4, 'CANCELADO']
+    (4, 'CANCELADO')
 ]
 
 FINANCIAL_STATE = [
@@ -189,13 +199,31 @@ class Delivery(models.Model):
 		blank=True
 	)
 
+	score = models.PositiveSmallIntegerField(
+		verbose_name='valoracion del cliente',
+		choices=SCORE,
+		default=0
+	)
+
+	comment2 = models.TextField(
+		verbose_name='comentarios del cliente',
+		null=True,
+		blank=True,
+	)
+
 	received = models.IntegerField(verbose_name='cobrado', default=0)
 
+	def get_company_amount(self):
+		if self.state == 4:
+			return 0
+
+		return self.company_amount
+
 	def get_total(self):
-		return self.service_amount + self.company_amount
+		return self.service_amount + self.get_company_amount()
 
 	def get_pending(self):
-		return self.service_amount + self.company_amount - self.received
+		return self.get_total() - self.received
 
 	def __str__(self):
 		return "Entrega ID: " + str(self.id)
@@ -210,3 +238,36 @@ class Service(models.Model):
 
 	def __str__(self):
 		return self.description
+
+
+class Report(models.Model):
+	class Meta:
+		verbose_name = "Reporte"
+		verbose_name_plural = "Reportes"
+
+	date = models.DateField(verbose_name="fecha", default=timezone.now)
+
+	def __str__(self):
+		return "Reporte del %s" % (self.date.strftime("%d/%m/%Y"))
+
+class UserReport(models.Model):
+	class Meta:
+		verbose_name = "Gestor del reporte"
+		verbose_name_plural = "Gestores del reporte"
+
+	report = models.ForeignKey(
+		Report, 
+		verbose_name="reporte", 
+		on_delete=models.CASCADE
+	)
+
+	employee = models.ForeignKey(
+		User,
+		verbose_name="gestor",
+		on_delete=models.CASCADE
+	)
+
+	base_amount = models.IntegerField(verbose_name="base", default=0)
+
+	def __str__(self):
+		return ""

@@ -12,6 +12,8 @@ class DeliverySerializer(serializers.ModelSerializer):
     total = serializers.IntegerField(read_only = True)
     pending = serializers.IntegerField(read_only = True)
     action = serializers.CharField(read_only=True)
+    action2 = serializers.CharField(read_only=True)
+
     class Meta:
         model = Delivery
         fields = '__all__'
@@ -26,4 +28,16 @@ class DeliverySerializer(serializers.ModelSerializer):
         representation['state'] = instance.get_state_display()
         representation['pending'] = instance.get_pending()
         representation['action'] = '<button class="btn btn-warning btn-sm" onclick="update_delivery(%d,%d,%d);">Editar</button>' % (instance.id, instance.state, instance.received)
+        representation['action2'] = '<button class="btn btn-warning btn-sm" onclick="vote(%d,%d,\'%s\');">Calificar</button>' % (
+                                                                            instance.id, 
+                                                                            instance.score, 
+                                                                            instance.comment2 if instance.comment2 != None else ''
+                                                                        )
+
         return representation
+
+
+class DeliveryVoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Delivery
+        fields = ['id', 'score', 'comment2']

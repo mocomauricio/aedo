@@ -67,6 +67,11 @@
             {"data": "state", createdCell: function (td, cellData, rowData, row, col) {
                     $(td).attr( "title", "Estado" );
                 }
+            },
+            {"data": "action2",render: function(data, type) {                     
+                    return data;
+                }
             }
         ]
     });
+

@@ -35,9 +35,21 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="fas fa-hourglass-half"></i>
-                  Pendientes
+                  <i class="fas fa-motorcycle"></i>
+                    Pendientes
                 </h3>
+                <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    {% if request.user|has_group:"Gestores" %}
+                    <li class="nav-item">
+                      <a class="btn btn-danger btn-sm mx-1" href="{% url 'reporte_gestor' request.user.id %}"> <i class="fas fa-file-pdf"></i> </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                      <button type="button" class="btn btn-success btn-sm" onclick="table.ajax.reload();"><i class="fas fa-sync-alt"></i></button>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="card-body">
 
@@ -110,8 +122,6 @@
         $("#comment").val("")
         $('#EditDelivery').modal('show')
       }
-
-
   </script>
 
 <script src="{% static '/plugins/datatables/jquery.dataTables.min.js' %}"></script>

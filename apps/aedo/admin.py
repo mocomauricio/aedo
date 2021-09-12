@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.decorators import register
-from .models import Company, UserCompany, City, Delivery, Service
+from django.utils.html import mark_safe 
+from .models import Company, UserCompany, City, Delivery, Service, Report, UserReport
 
 # Register your models here.
 @register(Company)
@@ -53,3 +54,21 @@ class DeliveryAdmin(admin.ModelAdmin):
     @admin.display(empty_value='???')
     def pendiente(self, obj):
         return obj.get_pending()
+
+
+
+class UserReportInline(admin.TabularInline):
+    model = UserReport
+    autocomplete_fields = ['employee']
+@register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ['date', 'reporte']
+    ordering = ['-id']
+    search_fields = ['date']
+    list_per_page = 50
+    inlines = [UserReportInline,]
+
+    def reporte(self, obj):
+        return mark_safe(
+            '<a href="/aedo/reporte_general/%s">%s</a>' % (str(obj.id), "DESCARGAR")
+        )

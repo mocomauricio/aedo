@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, CreateModelMixin, DestroyModelMixin
 from .permissions import IsOwnerOrReadOnly
-from .serializers import CitySerializer, DeliverySerializer
+from .serializers import CitySerializer, DeliverySerializer, DeliveryVoteSerializer
 from .models import City, Delivery, UserCompany
 
 # Create your views here.
@@ -14,7 +14,7 @@ class CityViewSet(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
 
 
-class DeliveryViewSet(ModelViewSet):
+class DeliveryViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin, UpdateModelMixin):
     queryset = Delivery.objects.all()
     serializer_class = DeliverySerializer
     permission_classes = [IsOwnerOrReadOnly]
@@ -38,6 +38,15 @@ class DeliveryPendingViewSet(ReadOnlyModelViewSet):
             return self.queryset.filter(employee=self.request.user).exclude(Q(state=3) | Q(state=4)).order_by('-id')
 
         elif self.request.user.groups.filter(name='Clientes'):
-            return self.queryset.filter(company__in=[i.company for i in UserCompany.objects.filter(user=self.request.user)]).exclude(state=3).order_by('-id')
+            return self.queryset.filter(company__in=[i.company for i in UserCompany.objects.filter(user=self.request.user)]).exclude(Q(state=3) | Q(state=4)).order_by('-id')
 
         return self.queryset.none()
+
+
+
+class DeliveryVoteViewSet(GenericViewSet, UpdateModelMixin):
+    queryset = Delivery.objects.all()
+    serializer_class = DeliveryVoteSerializer
+    permission_classes = [AllowAny]
+
+

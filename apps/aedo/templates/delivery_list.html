@@ -36,6 +36,18 @@
                   <i class="fas fa-motorcycle"></i>
                   Entregas
                 </h3>
+                <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    {% if request.user|has_group:"Gestores" %}
+                    <li class="nav-item">
+                      <a class="btn btn-danger btn-sm mx-1" href="{% url 'reporte_gestor' request.user.id %}"> <i class="fas fa-file-pdf"></i> </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                      <button type="button" class="btn btn-success btn-sm" onclick="table.ajax.reload();"><i class="fas fa-sync-alt"></i></button>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="card-body">
 
@@ -52,6 +64,7 @@
                           <th>Retirar</th>
                           <th>Importe</th>
                           <th>Estado</th>
+                          <th>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -97,6 +110,17 @@
 {% endblock %}
 
 {% block extrafooter %}
+<script type="text/javascript">
+    function vote(id, score, comment2){
+      console.log(`id=${id} score=${score} comment2=${comment2}`);
+      $("#delivery_id").val(id);
+      $("#score").val(score);
+      $("#comment2").val(comment2)
+      $('#VoteDelivery').modal('show')
+    }
+</script>
+
+
 <script src="{% static '/plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static '/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 
@@ -107,5 +131,49 @@
 
   {% if request.user|has_group:"Clientes" %} 
   <script src="{% static '/js/datatables_clientes.js' %}"></script>
+
+  <script type="text/javascript">
+      $("#voteDeliveryForm").submit(function(event) {
+        event.preventDefault();
+        const $csrf_token = $('[name="csrfmiddlewaretoken"]').val();
+        let delivery_id = $("#delivery_id").val();
+
+        var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+        });
+
+        $.ajax({
+            url: `/api/vote/${delivery_id}/`,
+            method:'PATCH',
+            headers:{
+                "X-CSRFToken": $csrf_token
+            },
+            data: {
+              'id': parseInt(delivery_id),
+              'score': parseInt($("#score").val()),
+              'comment2':  $("#comment2").val()
+            }
+        })
+        .done(function(response){
+          Toast.fire({
+            icon: 'success',
+            title: 'Su calificación fue enviada'
+          })
+          $('#VoteDelivery').modal('hide');
+          table.ajax.reload();
+        })
+        .fail(function(xhr, status, error) {
+          console.log(error);
+          Toast.fire({
+            icon: 'error',
+            title: 'Error: revise los campos introducidos'
+          })
+        });
+      });
+  </script>
+
   {% endif%}  
 {% endblock %}

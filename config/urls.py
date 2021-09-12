@@ -24,6 +24,9 @@ admin.site.site_header = 'AEDO Entregas'
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # aedo
+    path('aedo/', include("apps.aedo.urls")),
+
     # incluimos las urls de nuestro sitio custom  
     path('', include("apps.homepage.urls")),
 
