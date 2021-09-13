@@ -1,0 +1,33 @@
+
+   .jtabla {
+        border: 0px;
+    }
+    .jtabla caption {
+        font-size: 22px;
+    }
+    .jtabla thead {
+        display: none;
+    }
+    .jtabla tr {
+        margin-bottom: 8px;
+        
+        display: block;
+    }
+    .jtabla th, .jtabla td {
+
+        border: none;
+    }
+    .jtabla td {
+        display: block;
+        
+        text-align: right;
+    }
+    .jtabla  td:last-child {
+        border-bottom: 0px;
+    }
+    .jtabla td::before {
+        content: attr(title);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
