@@ -155,25 +155,25 @@ class Delivery(models.Model):
 	reception_date = models.DateField(
 		verbose_name='fecha de retiro',
 		null=True,
-		blank=True
+		blank=False
 	)
 
 	reception_time = models.TimeField(
 		verbose_name='hora de retiro',
 		null=True,
-		blank=True
+		blank=False
 	)
 
 	deliver_date = models.DateField(
 		verbose_name='fecha de entrega',
 		null=True,
-		blank=True
+		blank=False
 	)
 
 	deliver_time = models.TimeField(
 		verbose_name='hora de entrega',
 		null=True,
-		blank=True
+		blank=False
 	)
 
 	service_amount = models.IntegerField(verbose_name='costo del servicio')

@@ -32,6 +32,23 @@
         <div class="row">
 
           <div class="col-12">
+
+            {% if request.user|has_group:"Administración" %}
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-exclamation-circle"></i>
+                    Bienvenido
+                </h3>
+              </div>
+              <div class="card-body">
+                <p>Este sitio está destinado para usuarios clientes y gestores, usted está logueado con un usuario Administrador, puede redirigirse al sitio de administración en el siguiente enlace</p>
+                <a class="btn btn-success btn-block" href="/admin">Ir al sitio de Administración</a>
+              </div>
+            </div>
+            {% endif %} 
+
+            {% if request.user|has_group:"Gestores" %} 
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
@@ -40,11 +57,9 @@
                 </h3>
                 <div class="card-tools">
                   <ul class="nav nav-pills ml-auto">
-                    {% if request.user|has_group:"Gestores" %}
                     <li class="nav-item">
                       <a class="btn btn-danger btn-sm mx-1" href="{% url 'reporte_gestor' request.user.id %}"> <i class="fas fa-file-pdf"></i> </a>
                     </li>
-                    {% endif %}
                     <li class="nav-item">
                       <button type="button" class="btn btn-success btn-sm" onclick="table.ajax.reload();"><i class="fas fa-sync-alt"></i></button>
                     </li>
@@ -52,60 +67,72 @@
                 </div>
               </div>
               <div class="card-body">
-
-
-                {% if request.user|has_group:"Clientes" %} 
-                    <table id="datatables" class="jtabla table table-striped" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Paquete</th>
-                          <th>Gestor</th>
-                          <th>Destino</th>
-                          <th>Entregar</th>
-                          <th>Retirar</th>
-                          <th>Importe</th>
-                          <th>Estado</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-
-                        </tr>
-                      </tbody>
-                    </table>
-                {% endif %}
-
-                {% if request.user|has_group:"Gestores" %} 
-                    <table id="datatables" class="jtabla table table-striped" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Cliente</th>
-                          <th>Paquete</th>
-                          <th>Origen</th>
-                          <th>Destino</th>
-                          <th>Retirar</th>
-                          <th>Entregar</th>
-                          <th>Comisión</th>
-                          <th>Cobrar</th>
-                          <th>Estado</th>
-                          <th>Acciones<th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-
-                        </tr>
-                      </tbody>
-                    </table>
-                {% endif %}
-
+                <table id="datatables" class="jtabla table table-striped" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Cliente</th>
+                      <th>Paquete</th>
+                      <th>Origen</th>
+                      <th>Destino</th>
+                      <th>Retirar</th>
+                      <th>Entregar</th>
+                      <th>Comisión</th>
+                      <th>Cobrar</th>
+                      <th>Estado</th>
+                      <th>Acciones<th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
+            {% endif %}
+
+            {% if request.user|has_group:"Clientes" %} 
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-motorcycle"></i>
+                    Pendientes
+                </h3>
+                <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                      <button type="button" class="btn btn-success btn-sm" onclick="table.ajax.reload();"><i class="fas fa-sync-alt"></i></button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-body">                
+                <table id="datatables" class="jtabla table table-striped" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Paquete</th>
+                      <th>Gestor</th>
+                      <th>Destino</th>
+                      <th>Entregar</th>
+                      <th>Retirar</th>
+                      <th>Importe</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            {% endif %}
 
           </div>
-          <!-- /.col-md-6 -->
+          <!-- /.col-md-12 -->
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
