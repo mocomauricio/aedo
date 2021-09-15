@@ -58,7 +58,7 @@
                 <div class="card-tools">
                   <ul class="nav nav-pills ml-auto">
                     <li class="nav-item">
-                      <a class="btn btn-danger btn-sm mx-1" href="{% url 'reporte_gestor' request.user.id %}"> <i class="fas fa-file-pdf"></i> </a>
+                      <a download class="btn btn-danger btn-sm mx-1" href="{% url 'reporte_gestor' request.user.id %}"> <i class="fas fa-file-pdf"></i> </a>
                     </li>
                     <li class="nav-item">
                       <button type="button" class="btn btn-success btn-sm" onclick="table.ajax.reload();"><i class="fas fa-sync-alt"></i></button>
@@ -80,6 +80,7 @@
                       <th>Comisión</th>
                       <th>Cobrar</th>
                       <th>Estado</th>
+                      <th>Observaciones</th>
                       <th>Acciones<th>
                     </tr>
                   </thead>
@@ -142,11 +143,9 @@
   <script type="text/javascript">
       function update_delivery(id, state, received){
         console.log(`id=${id} state=${state} received=${received}`);
-        $("#current_received_id").val(received);
         $("#delivery_id").val(id);
         $("#state").val(state);
-        $("#received").val(0)
-        $("#comment").val("")
+        $("#received").val(received)
         $('#EditDelivery').modal('show')
       }
   </script>
@@ -178,7 +177,7 @@
                 "X-CSRFToken": $csrf_token
             },
             data: {
-              'received': parseInt($("#received").val()) + parseInt($("#current_received_id").val()),
+              'received': parseInt($("#received").val()),
               'state':    parseInt($("#state").val()),
               'comment':  $("#comment").val()
             }

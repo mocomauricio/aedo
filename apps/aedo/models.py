@@ -211,7 +211,9 @@ class Delivery(models.Model):
 		blank=True,
 	)
 
-	received = models.IntegerField(verbose_name='cobrado', default=0)
+	received2 = models.IntegerField(verbose_name='cobrado por AEDO', default=0)
+	received = models.IntegerField(verbose_name='cobrado por Gestor', default=0)
+
 
 	def get_company_amount(self):
 		if self.state == 4:
@@ -219,11 +221,16 @@ class Delivery(models.Model):
 
 		return self.company_amount
 
+	def get_received(self):
+		return self.received + self.received2
+
 	def get_total(self):
 		return self.service_amount + self.get_company_amount()
 
 	def get_pending(self):
-		return self.get_total() - self.received
+		return self.get_total() - self.get_received()
+
+
 
 	def __str__(self):
 		return "Entrega ID: " + str(self.id)

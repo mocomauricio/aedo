@@ -76,6 +76,10 @@
                     $(td).attr( "title", "Estado" );
                 }
             },
+            {"data": "comment", createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr( "title", "Observaciones" );
+                }
+            },
             {"data": "action",render: function(data, type) {                     
                     return data;
                 }

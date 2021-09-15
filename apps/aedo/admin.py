@@ -40,8 +40,8 @@ class DeliveryAdmin(admin.ModelAdmin):
             'js/admin_delivery.js',      
         )
 
-    list_display = ['id', 'company', 'employee', 'city', 'package', 'state', 'state2', 'total', 'pendiente']
-    list_filter = ['state', 'state2']
+    list_display = ['id', 'deliver_date', 'company', 'employee', 'city', 'package', 'state', 'state2', 'total', 'pendiente']
+    list_filter = ['deliver_date', 'state', 'state2']
     ordering = ['-id']
     search_fields = ['package', 'comment']
     list_per_page = 50
@@ -70,5 +70,5 @@ class ReportAdmin(admin.ModelAdmin):
 
     def reporte(self, obj):
         return mark_safe(
-            '<a href="/aedo/reporte_general/%s">%s</a>' % (str(obj.id), "DESCARGAR")
+            '<a download href="/aedo/reporte_general/%s">%s</a>' % (str(obj.id), "DESCARGAR")
         )

@@ -1,5 +1,6 @@
 {% load static %}
 {% load pwa %}
+{% load custom_templatetags %}
 
 <!DOCTYPE html>
 <!--
@@ -63,8 +64,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 {% include 'modals/profile.html' %}
 {% include 'modals/password.html' %}
 {% include 'modals/logout.html' %}
+
+{% if request.user|has_group:"Gestores" %} 
 {% include 'modals/delivery.html' %}
+{% endif %}
+
+{% if request.user|has_group:"Clientes" %} 
 {% include 'modals/vote.html' %}
+{% endif %}
 
 <!-- REQUIRED SCRIPTS -->
 
